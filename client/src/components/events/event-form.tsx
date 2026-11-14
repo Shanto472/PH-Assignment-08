@@ -1,7 +1,7 @@
 "use client";
 
 import { Calendar, Image as ImageIcon, MapPin, Tag, Type } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,59 @@ export function EventForm({
   );
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    // 1. Intercept programmatic smooth scrollIntoView calls triggered by react-datepicker on time list items
+    const originalScrollIntoView = HTMLElement.prototype.scrollIntoView;
+    HTMLElement.prototype.scrollIntoView = function (
+      this: HTMLElement,
+      arg?: boolean | ScrollIntoViewOptions
+    ) {
+      if (this.closest && this.closest(".react-datepicker__time-container")) {
+        return;
+      }
+      return originalScrollIntoView.call(this, arg);
+    };
+
+    // 2. Intercept programmatic scrollTop assignments on the time list so time never auto-scrolls on mount or date click
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      Element.prototype,
+      "scrollTop"
+    );
+
+    const preventTimeAutoScroll = () => {
+      const lists = document.querySelectorAll<HTMLUListElement>(
+        ".react-datepicker__time-list"
+      );
+      lists.forEach((list) => {
+        const customList = list as HTMLUListElement & {
+          __noAutoScrollAttached?: boolean;
+        };
+        if (customList.__noAutoScrollAttached) return;
+        customList.__noAutoScrollAttached = true;
+
+        const getter = originalDescriptor?.get;
+        Object.defineProperty(list, "scrollTop", {
+          get(this: HTMLUListElement) {
+            return getter ? getter.call(this) : 0;
+          },
+          set() {
+            // Intentionally block programmatic auto-scrolling
+          },
+          configurable: true,
+        });
+      });
+    };
+
+    preventTimeAutoScroll();
+    const observer = new MutationObserver(preventTimeAutoScroll);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      HTMLElement.prototype.scrollIntoView = originalScrollIntoView;
+      observer.disconnect();
+    };
+  }, []);
 
   const clearError = (field: keyof FieldErrors) => {
     if (errors[field]) {
@@ -210,6 +263,7 @@ export function EventForm({
               showTimeSelect
               timeIntervals={30}
               minDate={todayStart}
+              openToDate={todayStart}
               filterTime={(time: Date) => {
                 const candidate = new Date(eventDate || new Date());
                 candidate.setHours(
@@ -225,6 +279,7 @@ export function EventForm({
               dropdownMode="select"
               portalId="datepicker-portal"
               popperPlacement="bottom-start"
+              fixedHeight
               dateFormat="MMM d, yyyy h:mm aa"
               placeholderText="Select upcoming date & time"
               className={`flex h-11 w-full rounded-xl border bg-surface pr-4 pl-10 text-sm text-foreground placeholder:text-muted/70 transition-colors focus-visible:outline-none focus-visible:ring-2 ${

@@ -37,6 +37,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <div id="datepicker-portal" />
         </Providers>
       </body>
     </html>
