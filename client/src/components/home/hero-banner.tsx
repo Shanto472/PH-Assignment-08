@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarPlus, HeartHandshake, MapPin, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarPlus, MapPin, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -17,11 +17,6 @@ export function HeroBanner() {
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div className="space-y-7 lg:col-span-7">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-wide text-primary">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Grassroots Action Across Local Neighborhoods</span>
-          </div>
-
           <h1 className="font-heading text-4xl font-extrabold leading-[1.12] tracking-tight text-foreground sm:text-5xl lg:text-[3.4rem]">
             Turn Local Compassion Into{" "}
             <span className="text-primary">Organized Community Impact</span>
@@ -106,16 +101,6 @@ export function HeroBanner() {
                 <p className="text-xs leading-relaxed text-muted">
                   Future-dated events with transparent organizer tracking.
                 </p>
-              </div>
-            </div>
-
-            <div className="absolute -top-4 -right-3 hidden items-center gap-2 rounded-2xl border border-border bg-surface px-4 py-2.5 shadow-lg sm:flex">
-              <HeartHandshake className="h-5 w-5 text-primary" />
-              <div>
-                <p className="text-xs font-bold text-foreground">
-                  100% Community-Led
-                </p>
-                <p className="text-[11px] text-muted">Open civic participation</p>
               </div>
             </div>
           </div>
