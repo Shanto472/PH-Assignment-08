@@ -56,7 +56,6 @@ This boots the in-memory MongoDB database pre-seeded with 7 Dhaka community even
 
 ## 📜 Assignment Checklist & Verification
 
-- [x] **17+ GitHub Commits** tracked on main repository
 - [x] **Zero Lorem Ipsum text** used anywhere in the codebase
 - [x] **No native browser `alert()` or `confirm()`** used (powered by themed Sonner toasts & SweetAlert2)
 - [x] **Protected Routes session preservation** across page reloads

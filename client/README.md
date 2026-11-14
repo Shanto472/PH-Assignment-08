@@ -10,7 +10,7 @@ CivicRoots is a community-driven social development events platform built with *
 - **Dynamic Home Showcase & Upcoming Feed**: Displays a themed hero banner, platform capabilities, the 6 soonest upcoming events fetched dynamically via MongoDB `.limit(6)`, a static community service gallery, and a weekly digest newsletter section.
 - **Create Event with Future-Date Enforcement**: Authenticated organizers can publish cleanups, tree plantations, winter clothing drives, food shares, education camps, and healthcare events with `react-datepicker` validation that blocks past dates on both client and server.
 - **Public Event Details & Authenticated Joining**: Anyone can browse upcoming events (past dates automatically excluded) and view full event details publicly, while logged-in volunteers can join or leave events with duplicate-join protection.
-- **Creator-Only Event Management & Date-Sorted Joined Events**: Organizers can edit or delete only their own created events from the Manage Events dashboard, and volunteers can track all committed drives sorted chronologically on Joined Events.
+- **Creator-Only Event Management & Date-Sorted Joined Events**: Organizers can edit or delete only their own created events from the Manage Events dashboard, and volunteers can track all joined drives sorted chronologically on Joined Events.
 - **Full Light/Dark Theme, Search & Filters, Skeletons & Profile Editing**: Includes a system-wide Light/Dark theme toggle, real-time keyword search and category filtering, loading skeletons throughout the app, and a Profile page to update display name and profile picture.
 
 ## Environment Variables
