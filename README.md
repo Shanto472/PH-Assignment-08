@@ -1,6 +1,6 @@
 # CivicRoots — Social Development Events Platform
 
-> **Live Client URL:** `https://civicroots.vercel.app` *(update with your deployed URL upon hosting)*  
+> **Live Client URL:** [https://ph-assignment-08-five.vercel.app/](https://ph-assignment-08-five.vercel.app/)  
 > **GitHub Repository:** `https://github.com/Shanto472/PH-Assignment-08`
 
 CivicRoots is a community-driven social development event management platform where citizens can create, discover, join, and track social service initiatives across their local neighborhoods—such as winter clothes distributions, blanket outreach, urban tree plantations, and canal cleanups.

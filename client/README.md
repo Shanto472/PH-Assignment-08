@@ -1,6 +1,6 @@
 # CivicRoots — Social Development Events Platform
 
-**Live Site URL:** `https://civicroots.vercel.app` *(update with your deployed Vercel URL upon hosting)*
+**Live Site URL:** [https://ph-assignment-08-five.vercel.app/](https://ph-assignment-08-five.vercel.app/)
 
 CivicRoots is a community-driven social development events platform built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **BetterAuth**, **Express.js**, and **MongoDB** where neighbors can organize, discover, join, and track local social service initiatives.
 
