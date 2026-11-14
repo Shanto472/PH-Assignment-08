@@ -1,0 +1,9 @@
+{
+  "name": "ph-assignment-08-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix server install --include=dev && npm --prefix server run build",
+    "start": "node server/dist/index.js"
+  }
+}

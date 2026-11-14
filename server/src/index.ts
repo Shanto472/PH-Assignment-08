@@ -1,9 +1,21 @@
+process.on("uncaughtException", (error) => {
+  console.error("FATAL UNCAUGHT EXCEPTION:", error);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("FATAL UNHANDLED REJECTION:", reason);
+  process.exit(1);
+});
+
 import app from "./app.js";
 import { closeDB, connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
 
 async function startServer() {
   try {
+    const maskedUri = env.mongodbUri.replace(/:([^@:]+)@/, ":****@");
+    console.log(`Connecting to MongoDB (${maskedUri})...`);
     await connectDB();
     console.log("Connected to MongoDB successfully.");
 

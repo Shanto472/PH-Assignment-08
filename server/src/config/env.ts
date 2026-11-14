@@ -13,17 +13,22 @@ const frontendOrigins = parseOrigins(
   "http://localhost:3000"
 );
 
+const rawSecret = process.env.BETTER_AUTH_SECRET?.trim() || "";
+const safeBetterAuthSecret =
+  rawSecret.length >= 32
+    ? rawSecret
+    : (rawSecret + "-civicroots-production-secret-min-32-chars").slice(0, 64);
+
 export const env = {
   port: Number(process.env.PORT) || 5000,
   nodeEnv: process.env.NODE_ENV || "development",
   isProduction: process.env.NODE_ENV === "production",
-  mongodbUri:
-    process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/civicroots",
-  mongodbDbName: process.env.MONGODB_DB_NAME || "civicroots",
+  mongodbUri: (
+    process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/civicroots"
+  ).trim(),
+  mongodbDbName: (process.env.MONGODB_DB_NAME || "civicroots").trim(),
   mongodbTransactions: process.env.MONGODB_TRANSACTIONS === "true",
-  betterAuthSecret:
-    process.env.BETTER_AUTH_SECRET ||
-    "civicroots-dev-secret-change-in-production-32chars",
+  betterAuthSecret: safeBetterAuthSecret,
   betterAuthUrl: (
     process.env.BETTER_AUTH_URL ||
     frontendOrigins[0] ||
