@@ -21,7 +21,10 @@ async function startServer() {
     process.on("SIGINT", shutdown);
     process.on("SIGTERM", shutdown);
   } catch (error) {
-    console.error("Failed to start server:", error);
+    console.error("Failed to start CivicRoots API server:", error);
+    if (error instanceof Error) {
+      console.error("Details:", error.name, "-", error.message);
+    }
     process.exit(1);
   }
 }
