@@ -11,6 +11,7 @@ process.on("unhandledRejection", (reason) => {
 import app from "./app.js";
 import { closeDB, connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
+import { ensureDefaultSeedEvents } from "./utils/seed.js";
 
 async function startServer() {
   try {
@@ -18,6 +19,7 @@ async function startServer() {
     console.log(`Connecting to MongoDB (${maskedUri})...`);
     await connectDB();
     console.log("Connected to MongoDB successfully.");
+    await ensureDefaultSeedEvents();
 
     const server = app.listen(env.port, () => {
       console.log(`CivicRoots API server listening on port ${env.port}`);
