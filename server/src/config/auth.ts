@@ -10,6 +10,7 @@ const socialProviders =
         google: {
           clientId: env.googleClientId,
           clientSecret: env.googleClientSecret,
+          prompt: "select_account" as const,
         },
       }
     : undefined;
