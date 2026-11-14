@@ -19,10 +19,33 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { showSuccessAlert } from "@/lib/alerts";
-import { authClient, getJwtToken, useSession } from "@/lib/auth-client";
+import { authClient, continueWithGoogle, getJwtToken, useSession } from "@/lib/auth-client";
 import { isValidHttpUrl } from "@/lib/utils";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function GoogleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+      <path
+        fill="#EA4335"
+        d="M12 10.2v3.9h5.4c-.2 1.3-1.5 3.8-5.4 3.8-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.7 3.3 14.6 2.4 12 2.4 6.7 2.4 2.4 12s4.3 9.6 9.6 9.6c5.5 0 9.2-3.9 9.2-9.4 0-.6-.1-1.1-.2-1.6H12z"
+      />
+      <path
+        fill="#34A853"
+        d="M3.5 7.3l3.2 2.3C7.6 7.8 9.6 6.4 12 6.4c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.7 3.3 14.6 2.4 12 2.4 8.3 2.4 5.1 4.5 3.5 7.3z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M12 21.6c2.5 0 4.6-.8 6.2-2.2l-2.9-2.4c-.8.6-1.9 1-3.3 1-3.8 0-5.1-2.5-5.4-3.8l-3.2 2.5C5 19.6 8.3 21.6 12 21.6z"
+      />
+      <path
+        fill="#4285F4"
+        d="M21.2 12.2c0-.6-.1-1.1-.2-1.6H12v3.9h5.4c-.3 1.4-1.1 2.4-2.1 3l2.9 2.4c1.7-1.6 3-4 3-7.7z"
+      />
+    </svg>
+  );
+}
 
 function RegisterFormContent() {
   const router = useRouter();
@@ -39,6 +62,7 @@ function RegisterFormContent() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [errors, setErrors] = useState<{
     name?: string;
     email?: string;
@@ -132,6 +156,31 @@ function RegisterFormContent() {
       toast.error("Unable to reach authentication server.");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    try {
+      const res = await continueWithGoogle(redirectTarget);
+      if (res.redirected) {
+        return;
+      }
+      if (!res.success) {
+        toast.error(res.error || "Could not complete Google sign-in.");
+        setGoogleLoading(false);
+        return;
+      }
+
+      await showSuccessAlert(
+        "Welcome!",
+        "You have signed in with Google successfully."
+      );
+      router.push(redirectTarget);
+      router.refresh();
+    } catch {
+      toast.error("Could not initiate Google sign-in.");
+      setGoogleLoading(false);
     }
   };
 
@@ -343,6 +392,27 @@ function RegisterFormContent() {
             <span>{submitting ? "Creating account..." : "Register"}</span>
           </Button>
         </form>
+
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+            Or continue with
+          </span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={handleGoogleLogin}
+          disabled={googleLoading}
+        >
+          <GoogleIcon />
+          <span>
+            {googleLoading ? "Connecting to Google..." : "Continue with Google"}
+          </span>
+        </Button>
 
         <p className="mt-6 text-center text-sm text-muted">
           Already have an account?{" "}

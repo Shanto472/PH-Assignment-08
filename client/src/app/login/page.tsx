@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { showSuccessAlert } from "@/lib/alerts";
-import { authClient, getJwtToken, useSession } from "@/lib/auth-client";
+import { authClient, continueWithGoogle, getJwtToken, useSession } from "@/lib/auth-client";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -114,18 +114,22 @@ function LoginFormContent() {
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
     try {
-      const { error } = await authClient.signIn.social({
-        provider: "google",
-        callbackURL: `${window.location.origin}${redirectTarget}`,
-      });
-
-      if (error) {
-        toast.error(
-          error.message ||
-            "Google sign-in is not available right now. Please check OAuth configuration."
-        );
-        setGoogleLoading(false);
+      const res = await continueWithGoogle(redirectTarget);
+      if (res.redirected) {
+        return;
       }
+      if (!res.success) {
+        toast.error(res.error || "Could not complete Google sign-in.");
+        setGoogleLoading(false);
+        return;
+      }
+
+      await showSuccessAlert(
+        "Welcome!",
+        "You have signed in with Google successfully."
+      );
+      router.push(redirectTarget);
+      router.refresh();
     } catch {
       toast.error("Could not initiate Google sign-in.");
       setGoogleLoading(false);
