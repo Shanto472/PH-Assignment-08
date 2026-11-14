@@ -162,7 +162,8 @@ export function Navbar() {
                   <DropdownMenu.Content
                     align="end"
                     sideOffset={10}
-                    className="z-50 w-60 rounded-2xl border border-border bg-surface p-2 text-foreground shadow-xl"
+                    collisionPadding={16}
+                    className="z-50 max-h-[80vh] w-60 overflow-y-auto overflow-x-hidden rounded-2xl border border-border bg-surface p-2 text-foreground shadow-xl overscroll-contain"
                   >
                     <div className="mb-1.5 border-b border-border px-3 py-2">
                       <p className="truncate text-sm font-bold text-foreground">
@@ -247,7 +248,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="border-t border-border bg-surface px-4 py-4 md:hidden">
+        <div className="max-h-[80vh] overflow-y-auto border-t border-border bg-surface px-4 py-4 md:hidden">
           <div className="flex flex-col gap-2">
             <Link
               href="/"

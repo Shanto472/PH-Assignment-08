@@ -228,7 +228,7 @@ export function EventForm({
                 setEventType(e.target.value as EventCategory);
                 clearError("eventType");
               }}
-              className="flex h-11 w-full rounded-xl border border-border bg-surface pr-4 pl-10 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              className="flex h-11 w-full max-h-[80vh] rounded-xl border border-border bg-surface pr-4 pl-10 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
             >
               {EVENT_CATEGORIES.map((category) => (
                 <option key={category} value={category}>
